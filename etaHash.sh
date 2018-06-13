@@ -13,7 +13,6 @@ hashBase=$(basename "$1")
 hashPath="/home/$USER/verification"
 
 
-
 # change to directory that's root for checksum listings
 cd $sourcePath
 currentDir=$(pwd)
@@ -69,7 +68,7 @@ cronLog="${hashPath}/cronLog/cronLog.txt"
 # run the loop if we're in the right place.
 if [ $sourcePath == $currentDir ]; then
 	
-	for data in $(ls "$sourcePath" | grep md5)
+	for data in $(ls "$sourcePath" | grep -E 'md5$')
 	do
 		tape="$data"
 		tapeName=$(echo "$tape" | sed 's/.md5//')
