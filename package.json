@@ -1,0 +1,33 @@
+{
+  "name": "bashtag",
+  "productName": "PFW Tape Utilities",
+  "version": "1.0.0",
+  "description": "Electron as front end for tape control and data verification",
+  "main": "main.js",
+  "build": {
+    "AppId": "com.electron.${name}",
+    "category": "public.app-category.utilities",
+    "target": "pkg"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "build": "electron-packager ./ --arch=x64 --platform=darwin --out build --overwrite"
+  },
+  "keywords": [
+    "bash",
+    "electron"
+  ],
+  "author": "Emery Anderson",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.7.5",
+    "electron-packager": "^9.0.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.0",
+    "jquery": "^3.2.1",
+    "photonkit": "^0.1.2",
+    "popper.js": "^1.14.3"
+  }
+}
