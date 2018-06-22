@@ -6,3 +6,5 @@
 dist
 tmp
 node_modules
+build
+centos

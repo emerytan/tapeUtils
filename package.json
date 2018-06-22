@@ -12,7 +12,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build": "electron-packager ./ --arch=x64 --platform=darwin --out build --overwrite"
+    "build": "electron-packager ./ --arch=x64 --platform=darwin --out build --overwrite",
+    "centos": "electron-packager . --arch= 64 --platform linux --out centos --overwrite"
   },
   "keywords": [
     "bash",
