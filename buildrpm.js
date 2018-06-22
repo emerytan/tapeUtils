@@ -14,8 +14,5 @@ installer(options, function (err) {
 		console.error(err, err.stack)
 		process.exit(1)
 	}
-	
 	console.log('Successfully created package at ' + options.dest)
-
 })
-
