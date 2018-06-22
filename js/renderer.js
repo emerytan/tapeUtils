@@ -1,6 +1,6 @@
 const ipc = require('electron').ipcRenderer
 const {dialog} = require('electron').remote
-const {spawn} = require('child_process')
+const {spawn, exec} = require('child_process')
 const path = require('path')
 const { StringDecoder } = require('string_decoder')
 const decoder = new StringDecoder('utf8')
@@ -16,10 +16,7 @@ window.onload = function () {
 }
 
 ipc.on('app path', (event, message) => {
-	document.getElementById('messages').innerText += 'app path event received. \n'
 	userOptions.appPath = message
-	document.getElementById('messages').innerText += message.toString() + '\n'
-	document.getElementById('messages').innerText += userOptions.appPath + '\n'
 })
 
 
@@ -38,25 +35,43 @@ document.getElementById('getHashFile').addEventListener('click', (element, event
 document.getElementById('runsort').addEventListener('click', () => {
 
 	var scriptPath = path.join(userOptions.appPath, 'bin', 'formatHash.sh')
-
-	const run = spawn(scriptPath, [userOptions.hashFile, 'test.txt'])
+	const run = spawn(scriptPath, [userOptions.hashFile])
 	
 	run.on('error', (err) => {
 		console.log(err)
 	})
 	
 	run.stdout.on('data', (data) => {
+		let bar = document.getElementById('hashProgress')
+		let files = document.getElementById('showFiles')
+		let pct = document.getElementById('showpct')
+
+		var cmdOut = decoder.write(data)
+		var countRegex = /(^count:)\s(\d{1,6})/
+		var linesRegex = /(^lines:)\s(\d{1,6})/
+
+		var calc
+
+		if (linesRegex.test(cmdOut)) {
+			var max = linesRegex.exec(cmdOut)
+			document.getElementById('messages').innerText += max[2]
+			bar.max = max[2]
+		}
+
+		if (countRegex.test(cmdOut)) {
+			var pluck = countRegex.exec(cmdOut)
+			var progress = pluck[2]
+			bar.value = progress
+			calc = Number(progress) / bar.max * 100
+		} else {
+			files.innerText = decoder.write(cmdOut)
+		}
+	})
+
+	run.stderr.on('data', (data) => {
 		document.getElementById('output').innerText += decoder.write(data)
 	})
-	
-	run.stderr.on('data', (data) => {
-		var cmdOut = decoder.write(data)
-		let pin = document.getElementById('output')
-		pin.innerText = cmdOut
-		pin.scrollTop = pin.scrollHeight
-		document.getElementById('output').innerText = cmdOut
-	})
-	
+		
 	run.stderr.on('close', (code) => {
 		document.getElementById('messages').innerText = `exit code: ${code}`
 	})
