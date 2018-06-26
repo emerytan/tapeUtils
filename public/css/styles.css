@@ -5,19 +5,17 @@ body {
 }
 
 .pane-mini {
-    position: relative;
     width: 20%;
     background-color: rgb(32, 32, 32);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', monospace;
-    color: rgb(128, 128, 128)
+    color: rgb(128, 128, 128);
+    padding: 5px
 }
 
 .pane {
-    position: relative;
     width: auto;
     background-color: rgb(32, 32, 32);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', monospace;
-    color: rgb(128, 128, 128)
+    color: rgb(128, 128, 128);
+    padding: 5px
 }
 
 .btn.disabled,
@@ -42,16 +40,6 @@ body {
     font-size: .8em
 }
 
-th,
-td {
-    background-color: rgb(32, 32, 32);
-    color: cadetblue
-}
-
-#feedback {
-    margin: 1% auto;
-    padding: 0 1%
-}
 
 #container1 {
     height: 70%;
@@ -73,20 +61,6 @@ pre {
     font-size: .7em;
 }
 
-#testContainer {
-    height: 5%;
-    width: auto;
-    margin: 1% 1%;
-    font-size: .7em;
-    color: cadetblue
-}
-
-.indentText {
-    margin: 3px 8px;
-    font-size: .9em;
-    color: #ccc;
-    border-bottom: 1px solid#ccc
-}
 
 /* width */
 
@@ -133,6 +107,7 @@ progress {
     border-radius: 5px
 }
 
-#showFiles {
-    font-family: monospace
+.monotext {
+    font-family: monospace;
+    color: lightgray
 }

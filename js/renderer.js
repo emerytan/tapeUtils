@@ -49,6 +49,8 @@ document.getElementById('runsort').addEventListener('click', () => {
 		var cmdOut = decoder.write(data)
 		var countRegex = /(^count:)\s(\d{1,6})/
 		var linesRegex = /(^lines:)\s(\d{1,6})/
+		var hashRegex = /^hash:/
+
 
 		var calc
 
@@ -62,10 +64,14 @@ document.getElementById('runsort').addEventListener('click', () => {
 			var pluck = countRegex.exec(cmdOut)
 			var progress = pluck[2]
 			bar.value = progress
-			calc = Number(progress) / bar.max * 100
-		} else {
+		} 
+
+		if (hashRegex.test(cmdOut)) {
+			calc = bar.value / bar.max * 100
+			pct.innerText = calc.toFixed(0)
 			files.innerText = decoder.write(cmdOut)
 		}
+
 	})
 
 	run.stderr.on('data', (data) => {

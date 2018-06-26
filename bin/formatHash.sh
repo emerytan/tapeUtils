@@ -5,7 +5,8 @@ outPath="/tmp/eta"
 sourceFile="$1"
 outFile="${outPath}/$(basename $1 | sed 's/.md5/.txt/')"
 echo $outFile
-sleep 10
+sleep 1
+
 
 
 if [ ! -e $outPath ]; then
@@ -30,7 +31,7 @@ sort -k 2 "$sourceFile" | while read hash org; do
 	(( count ++ ))
 	FILE=$(basename $org)
 	echo -e "count: ${count}"
-	echo -e "File: $hash    ${FILE}"
+	echo -e "hash: $hash    ${FILE}"
 	echo -e "${hash} ${FILE}" >> "$outFile"
 done
 
