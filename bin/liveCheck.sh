@@ -1,7 +1,8 @@
 #!/bin/bash
 
+origHash="$1"
 
-head ttic_100_vam.md5 | sort -k 2 | while read hash orig; do
+sort -k 2 $origHash | while read hash orig; do
     FL=$(basename $orig)
     CSF=$(find . -name $FL)
     NH=$(md5sum $CSF)
