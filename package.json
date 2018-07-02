@@ -1,5 +1,5 @@
 {
-  "name": "bashtag",
+  "name": "pftapeutils",
   "productName": "PFW Tape Utilities",
   "version": "1.0.0",
   "description": "Electron as front end for tape control and data verification",
