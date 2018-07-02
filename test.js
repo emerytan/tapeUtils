@@ -1,8 +1,30 @@
-const spawn = require('child_process').spawn
+var ps = require('ps-node')
 
-const lines = spawn('wc', ['-l', './tmp/backup1_sums.md5', '|', 'cut', '-f1'], {
-  stdio: 'inherit'
-})
+ps.lookup({
+	arguments: 'liveCheck'
+}, (err, resultList) => {
+	if (err) {
+		console.log(err)
+	}
 
-console.log(lines.stdout);
+	if (resultList) {
+		console.log(resultList)
+		liveCheckProc = resultList
+		setTimeout(killIt, 3000);
+	}
+});
 
+function killIt() {
+	console.log('killIt function');
+	liveCheckProc.forEach(process => {
+		if (process) {
+			ps.kill(process.pid, (err) => {
+				if (err) {
+					throw err
+				} else {
+					console.log(`process: ${process.pid} killed`);
+				}
+			})
+		}
+	});
+}
