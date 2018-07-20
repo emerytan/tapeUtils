@@ -11,14 +11,23 @@ const {
 	StringDecoder
 } = require('string_decoder')
 const decoder = new StringDecoder('utf8')
+var pidManager = require('./pidManager')
+
 
 var userOptions = {}
+var taskPID = {}
 
 
 window.onload = function () {
 	document.getElementById('messages').innerText += 'window loaded\n'
 	ipc.send('init')
 }
+
+
+var bar = document.getElementById('hashProgress')
+var files = document.getElementById('showFiles')
+var pct = document.getElementById('showpct')
+var showPIDS = document.getElementById('showPIDS')
 
 ipc.on('app path', (event, message) => {
 	userOptions.appPath = message
@@ -37,25 +46,38 @@ document.getElementById('getHashFile').addEventListener('click', () => {
 		if (selection) {
 			userOptions.hashFile = selection[0]
 			userOptions.baseDir = path.dirname(selection[0])
+			document.getElementById('messages').innerText = selection[0]
+		}
+	})
+}, false)
+
+document.getElementById('setDestination').addEventListener('click', () => {
+	dialog.showOpenDialog({
+		buttonLabel: 'Set Destination',
+		properties: ['openDirectory', 'createDirectory']
+	}, (selection) => {
+		if (selection) {
+			userOptions.destination = selection[0]
+			document.getElementById('messages').innerText = selection[0]
 		}
 	})
 }, false)
 
 
-document.getElementById('runsort').addEventListener('click', () => {
+document.getElementById('verification1').addEventListener('click', () => {
 
 	var scriptPath = path.join(userOptions.appPath, 'bin', 'liveCheck.sh')
-	const run = spawn(scriptPath, [userOptions.hashFile, userOptions.baseDir])
+	const run = spawn(scriptPath, [userOptions.hashFile, userOptions.baseDir, userOptions.destination])
+	console.log(pidManager.getPIDS(userOptions.hashFile));
 
 	run.on('error', (err) => {
 		console.log(err)
 	})
 
+	
 
 	run.stdout.on('data', (data) => {
-		let bar = document.getElementById('hashProgress')
-		let files = document.getElementById('showFiles')
-		let pct = document.getElementById('showpct')
+		
 		// let debugText = document.getElementById('output')
 
 		var cmdOut = decoder.write(data)
@@ -67,7 +89,6 @@ document.getElementById('runsort').addEventListener('click', () => {
 
 		if (linesRegex.test(cmdOut)) {
 			var max = linesRegex.exec(cmdOut)
-			document.getElementById('messages').innerText += max[2]
 			bar.max = max[2]
 		}
 
@@ -76,7 +97,7 @@ document.getElementById('runsort').addEventListener('click', () => {
 			var progress = pluck[2]
 			bar.value = progress
 			calc = bar.value / bar.max * 100
-			pct.innerText = calc.toFixed(0)
+			pct.innerText = `Progress: ${calc.toFixed(0)}%`
 		}
 
 		if (hashRegex.test(cmdOut)) {
@@ -90,9 +111,11 @@ document.getElementById('runsort').addEventListener('click', () => {
 		document.getElementById('output').innerText += decoder.write(data)
 	})
 
-	run.stderr.on('close', (code) => {
+	run.on('close', (code) => {
 		document.getElementById('messages').innerText = `exit code: ${code}`
 	})
+    
 
 
 }, false)
+

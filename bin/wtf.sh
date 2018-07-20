@@ -4,13 +4,14 @@
 
 
 clear
-cd $2
+cd "$2" || exit
 pwd 
 sleep 5
 
-while read hash longp; do 
-  thisFile=$(basename $longp)
+while read -r hash longp; do 
+  thisFile=$(basename "$longp")
   echo "$hash ./files/$thisFile" | md5sum -c -
 done < $1 
 
 exit
+# met@Tape!

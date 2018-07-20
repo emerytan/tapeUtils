@@ -5,7 +5,7 @@
 	<title></title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-	<link href="./public/css/photon.css" rel="stylesheet">
+	<link href="node_modules/photonkit/dist/css/photon.css" rel="stylesheet">
 	<link href="./public/css/styles.css" rel="stylesheet">
 	<script>
 	</script>
@@ -18,24 +18,31 @@
 		<div class="window-content">
 			<div class="pane-group">
 				<div class="pane-mini sidebar">
-					<button id="getHashFile" class="btn btn-large btn-block btn-dark">Get File</button>
-					<button id="runsort" class="btn btn-large btn-block btn-dark">Run Sort</button>
-
+					<button id="getHashFile" class="btn btn-large btn-primary">Get Restored md5 File</button>
+					<button id="setDestination" class="btn btn-large btn-primary">Destination</button>
+					<button id="verification1" class="btn btn-large btn-primary">Generate New Hashes</button>
 				</div>
-				<div class="pane">
-					<div>
-						<p id="messages"></p>
+				<div id="mainPane" class="pane">
+					<div id="progContainer">
+                       
+						<div id="progCont1" class="progress">
+                            <progress id="hashProgress" name="hashProgress"></progress>
+                        </div>
+                        <div id="showPctContainer">
+                            <p id="showpct" class="monotext progress-text">Progress: %</p>
+						</div>
+						<div id="showhashContainer">
+                            <p id="showFiles" class="monotext progress-text">hash and file</p>
+						</div>
+                       
+        
 					</div>
-					<div>
-						<label for="hashProgress">Sort progress</label>
-						<progress id="hashProgress" name="hashProgress"></progress>
-						<p id="showpct" class="monotext"></p>
-						<p id="showFiles" class="monotext"></p>
+					<div id="shellContainer">
+						<pre id="output"></pre>
 					</div>
-					<div>
-						<pre id="output">
-							
-						</pre>
+                    <div id="messagesContainer">
+						<p id="showPIDS" class="monotext"></p>
+                        <p id="messages" class="monotext"></p>
 					</div>
 				</div>
 			</div>

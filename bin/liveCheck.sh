@@ -1,42 +1,36 @@
 #!/bin/bash
 
-
-outDir="/tmp/pfTapeUtils"
 origHash="$1"
 baseDir="$2"
+outPath="$3"
 jobRef=$(basename "${1}" | sed 's/.md5//')
-outFile="$outDir/${jobRef}.md5"
+outFile="$outPath/${jobRef}_restoreHash.md5"
 
 
 if [ -e "$outFile" ]; then
     echo -e "removing old temp file..."
-    rm -v "$outFile"
-    touch "$outFile"
+    rm -v "$outFile" || exit 1
+    touch "$outFile" || exit 1
 else
     echo -e "creating temp file...\n"
-    touch "$outFile"
+    touch "$outFile" || exit 1
 fi
 
-echo "initializing..." | tee -a "$outFile"
-echo -e "hashFile: $origHash"
-echo -e "jobRef: $jobRef"
-echo -e "baseDir: $baseDir"
-echo -e "outFile: $outFile\n"
+echo -e "hashFile: $origHash" 1>&2
+echo -e "outFile: $outFile" 1>&2
 
 
-cd "$baseDir"
-echo -e "are we in baseDir: $PWD"
-echo -e "starting in 3 seconds"
-sleep 2
+cd "$baseDir" || exit 1
+
 
 lineCount=$(wc -l "$origHash" | awk '{ print $1 }')
 echo -e "lines: $lineCount"
 count=0
-sort -k 2 $origHash | while read HASH FILE; do
+while read -r FILE; do
     (( count ++ ))
-    FL=$(basename $FILE)
+    FL=$(basename "$FILE")
     find . -type f -name "$FL" -print0 | xargs -0 md5 -r | tee -a "$outFile"
     echo -e "count: $count"
-done
+done < "$origHash"
 
 exit

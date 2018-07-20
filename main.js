@@ -21,15 +21,13 @@ app.on('ready', function () {
     mainWindow.on('closed', function () {
         mainWindow = null;
     });
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
 });
 
 
 ipcMain.on('init', (event, message) => {
-    console.log('init event received')
-    console.log(`app path: ${app.getAppPath()}`)
     event.sender.send('app path', app.getAppPath())
-    console.log(path.parse(app.getAppPath()));
+    
 })
 
 app.on('window-all-closed', function () {
