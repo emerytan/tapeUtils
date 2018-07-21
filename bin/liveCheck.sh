@@ -29,7 +29,7 @@ count=0
 while read -r FILE; do
     (( count ++ ))
     FL=$(basename "$FILE")
-    find . -type f -name "$FL" -print0 | xargs -0 md5 -r | tee -a "$outFile"
+    find . -type f -name "$FL" -print0 | xargs -0 md5sum | tee -a "$outFile"
     echo -e "count: $count"
 done < "$origHash"
 

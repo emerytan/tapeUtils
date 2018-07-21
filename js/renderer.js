@@ -83,7 +83,7 @@ document.getElementById('verification1').addEventListener('click', () => {
 		var cmdOut = decoder.write(data)
 		var countRegex = /(^count:)\s(\d{1,6})/
 		var linesRegex = /(^lines:)\s(\d{1,6})/
-		var hashRegex = /(^[a-f0-9]{32})\s(\.\/.+)/
+		var hashRegex = /(^[a-f0-9]{32})\s\s(\.\/.+)/
 
 		var calc
 
