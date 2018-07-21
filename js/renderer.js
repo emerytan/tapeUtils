@@ -68,7 +68,6 @@ document.getElementById('verification1').addEventListener('click', () => {
 
 	var scriptPath = path.join(userOptions.appPath, 'bin', 'liveCheck.sh')
 	const run = spawn(scriptPath, [userOptions.hashFile, userOptions.baseDir, userOptions.destination])
-	console.log(pidManager.getPIDS(userOptions.hashFile));
 
 	run.on('error', (err) => {
 		console.log(err)
@@ -78,8 +77,6 @@ document.getElementById('verification1').addEventListener('click', () => {
 
 	run.stdout.on('data', (data) => {
 		
-		// let debugText = document.getElementById('output')
-
 		var cmdOut = decoder.write(data)
 		var countRegex = /(^count:)\s(\d{1,6})/
 		var linesRegex = /(^lines:)\s(\d{1,6})/
