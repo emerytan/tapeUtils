@@ -1,7 +1,7 @@
 var installer = require('electron-installer-redhat')
 
 var options = {
-	src: 'centos/app-linux-x64/',
+	src: 'centos/PFW Tape Utilities-linux-x64/',
 	dest: 'dist/installers/',
 	arch: 'x86_64',
 	categories: ['Utilities']
