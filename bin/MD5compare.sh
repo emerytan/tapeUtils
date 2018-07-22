@@ -21,7 +21,7 @@ fi
 while read -r HASH FILE; do 
 	if (! grep "$HASH" "$2"); then
 		if (echo "$FILE" | grep -E 'txt$|md5$|orig$'); then
-			echo -e "IGNORE"
+			echo -e "IGNORED"
 		else	
 			echo -e "${HASH} ${FILE}\tFAIL" | tee -a "$tempFile"
 			sleep 2
@@ -34,7 +34,7 @@ if [ -s "$tempFile" ]; then
 	echo -e "\n\nFailed hash matches..."
 	cat "$tempFile"
 else
-	echo "all checksums matched"
+	echo -e "\n\nall checksums matched"
 	echo -e "bye...\n"
 fi
 
