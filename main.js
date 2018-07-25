@@ -3,17 +3,17 @@ const {
     BrowserWindow,
     ipcMain
 } = require('electron')
-const path = require('path')
-
+var taskPID = null
+var ps = require('ps-node')
 
 let mainWindow
 
 app.on('ready', function () {
     mainWindow = new BrowserWindow({
         width: 1000,
-        height: 600,
+        height: 300,
         'min-width': 800,
-        'min-height': 600,
+        'min-height': 200,
         'accept-first-mouse': true,
         'title-bar-style': 'hidden'
     });
@@ -27,7 +27,12 @@ app.on('ready', function () {
 
 ipcMain.on('init', (event, message) => {
     event.sender.send('app path', app.getAppPath())
-    
+})
+
+ipcMain.on('taskPID', (event, arg) => {
+    taskPID = arg
+    console.log(taskPID);
+    event.sender.send('pong')
 })
 
 app.on('window-all-closed', function () {
@@ -36,4 +41,17 @@ app.on('window-all-closed', function () {
     }
 });
 
-
+app.on('before-quit', () => {
+    if (taskPID === null) {
+        console.log('no jobs running');
+    } else {
+        console.log(`killing PID: ${taskPID}`);
+        ps.kill(taskPID, (err) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(`process: ${proc.pid} killed`)
+            }
+        })
+    }
+})

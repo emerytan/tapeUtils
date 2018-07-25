@@ -11,11 +11,12 @@ const {
 	StringDecoder
 } = require('string_decoder')
 const decoder = new StringDecoder('utf8')
-var pidManager = require('./pidManager')
+var ps = require('ps-node')
+
 
 
 var userOptions = {}
-var taskPID = {}
+var taskPID
 
 
 window.onload = function () {
@@ -28,6 +29,8 @@ var bar = document.getElementById('hashProgress')
 var files = document.getElementById('showFiles')
 var pct = document.getElementById('showpct')
 var showPIDS = document.getElementById('showPIDS')
+var messages = document.getElementById('messages')
+var shellOutput = document.getElementById('output')
 
 ipc.on('app path', (event, message) => {
 	userOptions.appPath = message
@@ -69,18 +72,29 @@ document.getElementById('verification1').addEventListener('click', () => {
 	var scriptPath = path.join(userOptions.appPath, 'bin', 'liveCheck.sh')
 	const run = spawn(scriptPath, [userOptions.hashFile, userOptions.baseDir, userOptions.destination])
 
-	run.on('error', (err) => {
-		console.log(err)
+	ps.lookup({
+		arguments: 'liveCheck'
+	}, (err, processes) => {
+		if (err) {
+			console.log(err)
+		}
+		if (processes) {
+			taskPID = processes
+			showPIDS.innerText = `PID: ${processes[0].pid}`
+			ipc.send('taskPID', processes[0].pid)
+		}
 	})
-
 	
 
+	run.on('error', (err) => {
+		shellOutput.innerText += decoder.write(err)
+	})
+
 	run.stdout.on('data', (data) => {
-		
 		var cmdOut = decoder.write(data)
 		var countRegex = /(^count:)\s(\d{1,6})/
 		var linesRegex = /(^lines:)\s(\d{1,6})/
-		var hashRegex = /(^[a-f0-9]{32})\s\s(\.\/.+)/
+		var hashRegex = /(^[a-f0-9]{32})\s{1,2}(\.\/.+)/
 
 		var calc
 
@@ -105,14 +119,30 @@ document.getElementById('verification1').addEventListener('click', () => {
 	})
 
 	run.stderr.on('data', (data) => {
-		document.getElementById('output').innerText += decoder.write(data)
+		shellOutput.innerText += decoder.write(data)
 	})
 
 	run.on('close', (code) => {
-		document.getElementById('messages').innerText = `exit code: ${code}`
+		ipc.send('taskPID', null)
+		messages.innerText = `exit code: ${code}`
 	})
-    
-
-
 }, false)
 
+
+document.getElementById('killJob').addEventListener('click', () => {
+	taskPID.forEach(proc => {
+		if (proc) {
+			ps.kill(proc.pid, (err) => {
+				if (err) {
+					throw err
+				} else {
+					messages.innerText = `process: ${proc.pid} killed`
+				}
+			})
+		}
+	});
+}, false)
+
+ipc.on('taskPID', (event, message) => {
+	messages.innerText += decoder.write(message)
+})

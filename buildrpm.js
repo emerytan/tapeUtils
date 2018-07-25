@@ -1,8 +1,15 @@
 var installer = require('electron-installer-redhat')
+var fs = require('fs')
+var sh = require('shelljs')
+var installerPath = './dist/installers'
+
+if (!fs.existsSync(installerPath)) {
+	sh.mkdir('-p', installerPath)
+}
 
 var options = {
-	src: 'centos/PFW Tape Utilities-linux-x64/',
-	dest: 'dist/installers/',
+	src: 'centos/PFT Hash Generator-linux-x64/',
+	dest: installerPath,
 	arch: 'x86_64',
 	categories: ['Utilities']
 }

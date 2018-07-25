@@ -2,16 +2,16 @@ var ps = require('ps-node')
 
 
 
-function getPIDS(hashFile) {
+function getPIDS() {
 	ps.lookup({
-		arguments: hashFile
-	}, (err, resultList) => {
+		arguments: 'find'
+	}, (err, resultsList) => {
 		if (err) {
 			console.log(err)
 		}
-		if (resultList) {
-			var thisPid = resultList.pid
-			return thisPid
+		if (resultsList) {
+			var thisPID = resultsList[0]
+			return thisPID
 		}
 	})
 }

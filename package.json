@@ -1,7 +1,7 @@
 {
   "name": "pftapeutils",
-  "productName": "PFW Tape Utilities",
-  "version": "1.0.0",
+  "productName": "PFT Hash Generator",
+  "version": "1.0.3",
   "description": "Electron as front end for tape control and data verification",
   "main": "main.js",
   "build": {
@@ -31,6 +31,7 @@
     "node-ps": "0.0.2",
     "photonkit": "^0.1.2",
     "popper.js": "^1.14.3",
-    "ps-node": "^0.1.6"
+    "ps-node": "^0.1.6",
+    "shelljs": "^0.8.2"
   }
 }
