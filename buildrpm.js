@@ -11,6 +11,7 @@ var options = {
 	src: 'centos/PFT Hash Generator-linux-x64/',
 	dest: installerPath,
 	arch: 'x86_64',
+	icon: './etaIcon_128x128.png',
 	categories: ['Utilities']
 }
 
