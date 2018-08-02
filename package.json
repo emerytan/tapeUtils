@@ -1,7 +1,7 @@
 {
   "name": "pftapeutils",
   "productName": "PFT Hash Generator",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Electron as front end for tape control and data verification",
   "main": "main.js",
   "build": {
