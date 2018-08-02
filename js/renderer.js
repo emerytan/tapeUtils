@@ -19,7 +19,6 @@ window.onload = function () {
 	ipc.send('init')
 }
 
-
 var bar = document.getElementById('hashProgress')
 var files = document.getElementById('showFiles')
 var pct = document.getElementById('showpct')
@@ -75,7 +74,6 @@ ipc.on('taskPID', (event, message) => {
 })
 
 ipc.on('hashGen output', (event, arg) => {
-	console.log(arg);
 	shellOutput.innerText += arg
 })
 
