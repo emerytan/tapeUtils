@@ -9,7 +9,7 @@ if (!fs.existsSync(installerPath)) {
 }
 
 var options = {
-	src: 'centos/PFT Hash Generator-linux-x64/',
+	src: 'centos/pftapeutils-linux-x64/',
 	dest: installerPath,
 	arch: 'x86_64',
 	icon: 'elecIcon_512x512.png',
