@@ -43,6 +43,7 @@ document.getElementById('getHashFile').addEventListener('click', () => {
 		if (selection) {
 			userOptions.hashFile = selection[0]
 			userOptions.baseDir = path.dirname(selection[0])
+			messages.innerText = `hash file: ${userOptions.hashFile}`
 		}
 	})
 }, false)
@@ -54,6 +55,7 @@ document.getElementById('setDestination').addEventListener('click', () => {
 	}, (selection) => {
 		if (selection) {
 			userOptions.destination = selection[0]
+			messages.innerText = `output file: ${userOptions.destination}`
 		}
 	})
 }, false)

@@ -45,7 +45,7 @@ ipcMain.on('init', (event, message) => {
 ipcMain.on('start hash gen', (event, arg) => {
     var scriptPath = path.join(arg.appPath, 'bin', 'liveCheck.sh')
     const run = spawn(scriptPath, [arg.hashFile, arg.baseDir, arg.destination])
-    getTaskPID()
+    getTaskPID(arg.hashFile)
 
     run.on('error', (err) => {
         mainWindow.webContents.send('hashGen output', decoder.write(err))
@@ -91,9 +91,10 @@ app.on('before-quit', () => {
     killIT()
 })
 
-function getTaskPID() {
+function getTaskPID(arguments) {
     ps.lookup({
-        arguments: 'liveCheck'
+        command: 'bin/bash',
+	arguments: arguments
     }, (err, processes) => {
         if (err) {
             console.log(err)

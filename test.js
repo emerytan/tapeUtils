@@ -1,7 +1,8 @@
 var ps = require('ps-node')
+var liveCheckProc
 
 ps.lookup({
-	arguments: 'liveCheck'
+	arguments: '/home/emery'
 }, (err, resultList) => {
 	if (err) {
 		console.log(err)
